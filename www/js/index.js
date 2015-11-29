@@ -21,86 +21,14 @@ var app = {
     initialize: function() {
         this.bindEvents();
     },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-
     onDeviceReady: function() {
         document.getElementById("placeToEat").innerHTML="Je sais pas, mais j'ai faim";
-        var places=["Boulangerie","Casino","McDonalds","Daily Café","Subway","Green King","???"];
-        var randomizeMenu=function() {
-            var max=places.length;
-            var min=0;
-            return places[Math.floor(Math.random() * (max - min)) + min];//returns the value with random index
-        };
-        function shakeCallBack()
-        {
-            var placeToEat=randomizeMenu();
-            document.getElementById("placeToEat").innerHTML=placeToEat;
-        }
         var accelerometerHelper = new AccelerometerApp();
         accelerometerHelper.run();
-        /* trying to detect a shake */
-        /*var options = {
-            frequency: 100
-        };
-        var watchId = null;
-        var previousAcceleration = {
-            x: null,
-            y: null,
-            z: null
-        };
-
-        var onError=function(){
-            alert('not working');
-        };
-        var sensitivity = 30;
-        watchId = navigator.accelerometer.watchAcceleration(assessCurrentAcceleration, onError, options);
-        var assessCurrentAcceleration = function (acceleration) {
-            var accelerationChange = {};
-            if (previousAcceleration.x !== null) {
-                accelerationChange.x = Math.abs(previousAcceleration.x - acceleration.x);
-                accelerationChange.y = Math.abs(previousAcceleration.y - acceleration.y);
-                accelerationChange.z = Math.abs(previousAcceleration.z - acceleration.z);
-            }
-
-            previousAcceleration = {
-                x: acceleration.x,
-                y: acceleration.y,
-                z: acceleration.z
-            };
-            document.getElementById("placeToEat").innerHTML=""+previousAcceleration.x+"-"+previousAcceleration.y+"-"+previousAcceleration.z;
-            if (accelerationChange.x + accelerationChange.y + accelerationChange.z > sensitivity) {
-                // Shake detected
-                shakeCallBack();
-            }
-        };*/
-
-
-
-
-        //app.receivedEvent('deviceready');
-
     }
-    // Update DOM on a Received Event
-    /*receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }*/
 };
 
 function AccelerometerApp() {
@@ -109,25 +37,15 @@ function AccelerometerApp() {
 
 AccelerometerApp.prototype = {
     watchID : null,
-    spanX : null,
-    spanY: null,
-    spanZ: null,
-    spanTimeStamp: null,
-    lastKnownAcceleration:{x:null,y:null,z:null},
+    lastKnownAcceleration:{x:null,y:null,z:null,t:null},
     spanAccelerationChange:null,
     placeToEat:null,
     places:null,
 
     run: function() {
         var that = this;
-
-        that.spanX = document.getElementById("spanDirectionX");
-        that.spanY = document.getElementById("spanDirectionY");
-        that.spanZ = document.getElementById("spanDirectionZ");
-        that.spanTimeStamp = document.getElementById("spanTimeStamp");
-        that.spanAccelerationChange = document.getElementById("spanAccelerationChange");
         that.placeToEat = document.getElementById("placeToEat");
-        that.places=["Boulangerie","Casino","McDonalds","Daily Café","Subway","Green King","???"];
+        that.places=["Boulangerie","Casino","McDonalds","Daily Café","Subway","Green King","L'olivier","???"];
         that._startWatch();
     },
 
@@ -155,20 +73,13 @@ AccelerometerApp.prototype = {
             var emptyText = "";
             navigator.accelerometer.clearWatch(that.watchID);
             that.watchID = null;
-            that.spanX.textContent = emptyText;
-            that.spanY.textContent = emptyText;
-            that.spanZ.textContent = emptyText;
-            that.spanTimeStamp.textContent = emptyText;
         }
     },
 
     //Get a snapshot of the current acceleration
     _onAccelerometerSuccess: function(acceleration) {
         var that = this;
-        /*that.spanX.textContent = acceleration.x;
-        that.spanY.textContent = acceleration.y;
-        that.spanZ.textContent = acceleration.z;
-        that.spanTimeStamp.textContent = acceleration.timestamp;*/
+        var shouldIchange=true;
         var accelerationChange={x:0,y:0,z:0};
         if(that.lastKnownAcceleration.x !==null){
             accelerationChange.x=Math.abs(that.lastKnownAcceleration.x - acceleration.x);
@@ -178,14 +89,16 @@ AccelerometerApp.prototype = {
         that.lastKnownAcceleration.x=acceleration.x;
         that.lastKnownAcceleration.y=acceleration.y;
         that.lastKnownAcceleration.z=acceleration.z;
-        /*that.spanAccelerationChange.textContent="at least : "+(accelerationChange.x+accelerationChange.y+accelerationChange.z);*/
-//        that.placeToEat.textContent = "yolo";
+        if(that.lastKnownAcceleration.t !== null)
+            shouldIchange=((that.lastKnownAcceleration.t+500) < acceleration.timestamp);
+        that.lastKnownAcceleration.t=acceleration.timestamp;
         if((accelerationChange.x+accelerationChange.y+accelerationChange.z) > 30.0){
             var max=that.places.length;
             var min=0;
             var rdm=(Math.floor(Math.random() * (max - min)) + min);
-//            that.placeToEat.textContent = "not that yolo "+that.places[rdm];
-            that.placeToEat.textContent = that.places[rdm];//returns the value with random index
+            if(shouldIchange) {
+                that.placeToEat.textContent = that.places[rdm];//returns the value with random index
+            }
         }
 
     },
@@ -200,5 +113,5 @@ AccelerometerApp.prototype = {
         } else
             alert("Unable to start accelerometer! Error code: " + error.code );
     }
-}
+};
 app.initialize();
