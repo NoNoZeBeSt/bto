@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="bto">
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Bouffeteo&reg;</title>
+    </head>
+    <body>
+        <div class="app">
+            <h1>Bienvenue sur Bouffeteo<sup>&reg;</sup></h1>
+            <div id="whereDoWeEat" class="blink">
+                <p>On mange où ?</p>
+                <p id="placeToEat"></p>
+            </div>
+            <div id="spanAccelerationChange"></div>
+            <div id="spanDirectionX"></div>
+            <div id="spanDirectionY"></div>
+            <div id="spanDirectionZ"></div>
+            <div id="spanTimeStamp"></div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script>
+           /* document.addEventListener('deviceready', onDeviceReady, false);
+            document.addEventListener("touchstart", onShake, false);
+            var places=["Boulangerie","Casino","McDonalds","Daily Café","Subway","Green King","???"];
+            function onDeviceReady() {
+                document.getElementById("placeToEat").innerHTML="Nowhere yet ! Are you hungry ?";
+                shake.startWatch(onShake);
+            }
+            function randomizeMenu() {
+                var max=places.length;
+                var min=0;
+                return places[Math.floor(Math.random() * (max - min)) + min];//returns the value with random index
+            }
+            function onShake()
+            {
+                var placeToEat=randomizeMenu();
+                document.getElementById("placeToEat").innerHTML=placeToEat;
+            }*/
+        </script>
+    </body>
+</html>

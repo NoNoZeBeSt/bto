@@ -1,0 +1,27 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "fr.nydus.bto"
+        },
+        "cordova-plugin-device-motion": {
+            "PACKAGE_NAME": "fr.nydus.bto"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "fr.nydus.bto"
+        },
+        "cordova-plugin-device-orientation": {
+            "PACKAGE_NAME": "fr.nydus.bto"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "fr.nydus.bto"
+        }
+    },
+    "dependent_plugins": {}
+}
